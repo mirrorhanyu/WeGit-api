@@ -73,7 +73,7 @@ class DeveloperTest(unittest.TestCase):
         self.assertEqual(context.exception.response.reason, 'request developer fails')
 
     @requests_mock.Mocker()
-    def test_should_return_correct_response_when_requesting_github_trending_api_success(self, request_mock):
+    def test_should_return_correct_response_when_requesting_github_developer_api_success(self, request_mock):
         request_mock.get(url='https://api.github.com/users/mirrorhanyu',
                          text=json.dumps(self.developer),
                          status_code=200)

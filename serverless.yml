@@ -53,3 +53,16 @@ functions:
           method: get
           cors: true
           private: true
+
+  search:
+    handler: search.get_search
+    name: search
+    environment:
+      GITHUB_API_HOST: 'https://api.github.com'
+      GITHUB_ACCESS_TOKEN: ${env:GITHUB_ACCESS_TOKEN}
+    events:
+      - http:
+          path: search
+          method: get
+          cors: true
+          private: true

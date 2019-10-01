@@ -154,7 +154,7 @@ class RepositoryTest(unittest.TestCase):
         self.assertEqual(context.exception.response.reason, 'request repository fails')
 
     @requests_mock.Mocker()
-    def test_should_return_correct_response_when_requesting_github_trending_api_success(self, request_mock):
+    def test_should_return_correct_response_when_requesting_github_repository_api_success(self, request_mock):
         request_mock.get(url='https://api.github.com/repos/mirrorhanyu/WeGit',
                          text=json.dumps(self.repository),
                          status_code=200)

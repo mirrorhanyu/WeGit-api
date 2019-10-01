@@ -14,13 +14,13 @@ provider:
   stage: prod
   region: ap-southeast-1
   profile: callmehan
-  environment:
-    GITHUB_TRENDING_HOST: 'https://github-trending-api.now.sh'
 
 functions:
   trending:
     handler: trending.get_trending_repositories_and_developers
     name: trending
+    environment:
+      GITHUB_TRENDING_HOST: 'https://github-trending-api.now.sh'
     events:
       - http:
           path: trending
@@ -28,3 +28,15 @@ functions:
           cors: true
           private: true
 
+  developer:
+    handler: developer.get_developer
+    name: developer
+    environment:
+      GITHUB_API_HOST: 'https://api.github.com'
+      GITHUB_ACCESS_TOKEN: ${env:GITHUB_ACCESS_TOKEN}
+    events:
+      - http:
+          path: developer
+          method: get
+          cors: true
+          private: true

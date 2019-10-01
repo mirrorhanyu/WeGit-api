@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import os
 import unittest
@@ -60,7 +61,7 @@ class TrendingTest(unittest.TestCase):
                          reason='request repositories fails',
                          status_code=500)
         with self.assertRaises(HTTPError) as context:
-            trending.get_trending_repositories_and_developers(self.event)
+            trending.get_trending_repositories_and_developers(self.event, None)
         self.assertEqual(context.exception.response.reason, 'request repositories fails')
 
     @requests_mock.Mocker()
@@ -72,7 +73,7 @@ class TrendingTest(unittest.TestCase):
                          text=json.dumps(self.developers),
                          status_code=200)
 
-        trending_response = trending.get_trending_repositories_and_developers(self.event)
+        trending_response = trending.get_trending_repositories_and_developers(self.event, None)
 
         trending_response_status_code = trending_response.get('statusCode')
         trending_response_body = json.loads(trending_response.get('body'))

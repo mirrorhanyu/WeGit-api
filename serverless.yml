@@ -66,3 +66,16 @@ functions:
           method: get
           cors: true
           private: true
+
+  event:
+    handler: event.get_event
+    name: event
+    environment:
+      GITHUB_API_HOST: 'https://api.github.com'
+      GITHUB_ACCESS_TOKEN: ${env:GITHUB_ACCESS_TOKEN}
+    events:
+      - http:
+          path: event
+          method: get
+          cors: true
+          private: true

@@ -40,3 +40,16 @@ functions:
           method: get
           cors: true
           private: true
+
+  repository:
+    handler: repository.get_repository
+    name: repository
+    environment:
+      GITHUB_API_HOST: 'https://api.github.com'
+      GITHUB_ACCESS_TOKEN: ${env:GITHUB_ACCESS_TOKEN}
+    events:
+      - http:
+          path: repository
+          method: get
+          cors: true
+          private: true

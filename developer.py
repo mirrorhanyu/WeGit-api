@@ -9,11 +9,11 @@ def get_developer(event, context, requests):
     name = event.get('queryStringParameters').get('name')
     github_api_host = os.environ.get('GITHUB_API_HOST')
     github_access_token = os.environ.get('GITHUB_ACCESS_TOKEN')
-    trending_developer_url = f'{github_api_host}/users/{name}'
-    trending_developer_headers = {
+    developer_url = f'{github_api_host}/users/{name}'
+    developer_headers = {
         'Authorization': f'token {github_access_token}'
     }
-    developer = requests.get(url=trending_developer_url, headers=trending_developer_headers)
+    developer = requests.get(url=developer_url, headers=developer_headers)
     return {
         'statusCode': 200,
         'body': json.dumps(pick_from_developer(developer.json()))

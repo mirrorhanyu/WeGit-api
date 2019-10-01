@@ -11,9 +11,15 @@ import developer
 class DeveloperTest(unittest.TestCase):
     os.environ['GITHUB_API_HOST'] = 'https://api.github.com'
 
-    event = {
+    query_by_name_event = {
         'queryStringParameters': {
             'name': 'mirrorhanyu'
+        }
+    }
+
+    query_by_token_event = {
+        'queryStringParameters': {
+            'token': 'secret'
         }
     }
 
@@ -69,15 +75,39 @@ class DeveloperTest(unittest.TestCase):
                          reason='request developer fails',
                          status_code=500)
         with self.assertRaises(HTTPError) as context:
-            developer.get_developer(self.event, None)
+            developer.get_developer(self.query_by_name_event, None)
         self.assertEqual(context.exception.response.reason, 'request developer fails')
 
     @requests_mock.Mocker()
-    def test_should_return_correct_response_when_requesting_github_developer_api_success(self, request_mock):
+    def test_should_return_correct_response_when_requesting_github_developer_api_by_name_success(self, request_mock):
         request_mock.get(url='https://api.github.com/users/mirrorhanyu',
                          text=json.dumps(self.developer),
                          status_code=200)
-        developer_response = developer.get_developer(self.event, None)
+        developer_response = developer.get_developer(self.query_by_name_event, None)
+
+        developer_response_status_code = developer_response.get('statusCode')
+        developer_response_body = json.loads(developer_response.get('body'))
+
+        self.assertEqual(developer_response_status_code, 200)
+        self.assertEqual(len(developer_response_body.keys()), 11)
+        self.assertEqual(developer_response_body.get('avatar'), 'https://avatars3.githubusercontent.com/u/7698256?v=4')
+        self.assertEqual(developer_response_body.get('name'), 'han')
+        self.assertEqual(developer_response_body.get('nickname'), 'mirrorhanyu')
+        self.assertEqual(developer_response_body.get('bio'), 'Hello, Im Han')
+        self.assertEqual(developer_response_body.get('repos'), 11)
+        self.assertEqual(developer_response_body.get('followers'), 6)
+        self.assertEqual(developer_response_body.get('following'), 59)
+        self.assertEqual(developer_response_body.get('email'), 'mirrorhanyu@gmail.com')
+        self.assertEqual(developer_response_body.get('blog'), 'mirrorhanyu.com')
+        self.assertEqual(developer_response_body.get('company'), '@thoughtworks')
+        self.assertEqual(developer_response_body.get('location'), 'wuhan')
+
+    @requests_mock.Mocker()
+    def test_should_return_correct_response_when_requesting_github_developer_api_by_token_success(self, request_mock):
+        request_mock.get(url='https://api.github.com/user',
+                         text=json.dumps(self.developer),
+                         status_code=200)
+        developer_response = developer.get_developer(self.query_by_token_event, None)
 
         developer_response_status_code = developer_response.get('statusCode')
         developer_response_body = json.loads(developer_response.get('body'))

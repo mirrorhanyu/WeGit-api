@@ -99,3 +99,6 @@ class TrendingTest(unittest.TestCase):
         self.assertEqual(trending_developers[0].get('repoName'), 'react-native-gesture-handler')
         self.assertEqual(trending_developers[0].get('repoDescription'),
                          'Declarative API exposing platform native touch and gesture system to React Native.')
+
+        trending_languages = trending_response_body.get('languages')
+        self.assertEqual(trending_languages, ['CSS', 'Go', 'HTML', 'Java', 'Javascript', 'Python', 'Typescript'])

@@ -17,7 +17,8 @@ def get_trending_repositories_and_developers(event, context, requests):
         'statusCode': 200,
         'body': json.dumps({
             'repositories': pick_from_repositories(trending_repositories_response.json()),
-            'developers': pick_from_developers(trending_developers_response.json())
+            'developers': pick_from_developers(trending_developers_response.json()),
+            'languages': ['CSS', 'Go', 'HTML', 'Java', 'Javascript', 'Python', 'Typescript']
         })
     }
 

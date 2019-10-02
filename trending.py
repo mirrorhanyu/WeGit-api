@@ -6,19 +6,20 @@ from helpers.decorators.require_requests_session import require_requests_session
 
 @require_requests_session
 def get_trending_repositories_and_developers(event, context, requests):
-    since = event.get('queryStringParameters').get('since')
-    language = event.get('queryStringParameters').get('language')
     github_trending_host = os.environ.get('GITHUB_TRENDING_HOST')
-    trending_repositories_url = f'{github_trending_host}/repositories?language={language}&since={since}'
-    trending_developers_url = f'{github_trending_host}/developers?language={language}&since={since}'
-    trending_repositories_response = requests.get(url=trending_repositories_url)
-    trending_developers_response = requests.get(url=trending_developers_url)
+    trending_parameters = {
+        'since': event.get('queryStringParameters').get('since'),
+        'language': event.get('queryStringParameters').get('language')
+    }
+    trending_repositories_url = f'{github_trending_host}/repositories'
+    trending_developers_url = f'{github_trending_host}/developers'
+    trending_repositories_response = requests.get(url=trending_repositories_url, params=trending_parameters)
+    trending_developers_response = requests.get(url=trending_developers_url, params=trending_parameters)
     return {
         'statusCode': 200,
         'body': json.dumps({
             'repositories': pick_from_repositories(trending_repositories_response.json()),
-            'developers': pick_from_developers(trending_developers_response.json()),
-            'languages': ['CSS', 'Go', 'HTML', 'Java', 'Javascript', 'Python', 'Typescript']
+            'developers': pick_from_developers(trending_developers_response.json())
         })
     }
 

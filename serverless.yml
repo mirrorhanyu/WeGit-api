@@ -1,19 +1,17 @@
 service: WeGit
 app: wegit
-org: mirrorhanyu
 
 plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
-    dockerizePip: true
+    dockerizePip: non-linux
 
 provider:
   name: aws
   runtime: python3.7
   stage: prod
   region: ap-southeast-1
-  profile: callmehan
 
 functions:
   trending:
